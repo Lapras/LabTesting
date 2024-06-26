@@ -1,0 +1,10 @@
+FROM ubuntu:19.10
+
+WORKDIR /app
+
+COPY homepage.html .
+
+RUN pip3 install flask
+RUN pip3 install psycopg2
+
+CMD 
