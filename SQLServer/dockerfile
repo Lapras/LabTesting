@@ -1,4 +1,4 @@
-FROM ubuntu:19.10
+FROM postgres
 
 RUN sudo apt-get update
 RUN sudo apt-get upgrade

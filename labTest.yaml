@@ -1,8 +1,7 @@
 services:
   db:
-    image: postgres
+    build: ./SQLServer
     restart: always
+
     environment:
-      POSTGRES_PASSWORD: pass
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      POSTGRES_PASSWORD: password
