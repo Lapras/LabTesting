@@ -1,5 +1,2 @@
 FROM postgres
 
-RUN sudo apt-get update
-RUN sudo apt-get upgrade
-
