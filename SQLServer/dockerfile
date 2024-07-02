@@ -1,2 +1,4 @@
 FROM postgres
 
+COPY DBDump.sql /docker-entrypoint-initdb.d/
+
