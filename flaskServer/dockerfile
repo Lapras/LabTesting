@@ -2,13 +2,17 @@ FROM python
 
 WORKDIR /app
 
-COPY index.html .
+RUN mkdir templates
+
+COPY index.html ./templates/
 COPY API.txt .
 
 COPY app.py .
 
 RUN pip3 install flask
 RUN pip3 install psycopg2
+
+EXPOSE 1234
 
 ENV FLASK_APP=app
 CMD python3 app.py
