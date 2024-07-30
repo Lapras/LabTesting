@@ -27,5 +27,5 @@ services:
       - USER_PASSWORD=B0bBoY25876 #optional
       - USER_NAME=bob #optional
     ports:
-      - 25:2222
+      - 2222:2222
     restart: unless-stopped
