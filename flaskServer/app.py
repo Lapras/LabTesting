@@ -51,7 +51,7 @@ def run_SQL():
         conn = get_db_connection()
         cursor = conn.cursor()
         cmd = f"SELECT {input_command} FROM stuff;"
-        app.logger(cmd)
+        app.logger.info(cmd)
         data = cursor.execute(cmd)
         app.logger.info(data)
         return jsonify(data)
