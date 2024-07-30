@@ -52,6 +52,7 @@ def run_SQL():
         cursor = conn.cursor()
         
         data = cursor.execute(f"SELECT {input_command} FROM stuff;")
+        app.logger.info(data)
         return jsonify(data)
     
 if(__name__ == '__main__'):
