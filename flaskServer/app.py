@@ -14,8 +14,8 @@ os_vs = platform.version()
 def index():
     return render_template('index.html')
 
-@app.route('/API_Info')
-def API_Info():
+@app.route('/get_api', methods=["GET"])
+def API():
     return send_from_directory(app.static_folder, 'API.txt')
 
 @app.route('/Send_SQL_Req', methods=['POST'])
@@ -28,7 +28,7 @@ def run_SQL():
         data = cursor.execute("SELECT * FROM stuff where data = %s" (input_command))
         return jsonify(data)
     
-if __name__ == '__main__':
-    app.run(debug=False, port=1234, host ="0.0.0.0")
+if(__name__ == '__main__'):
+    app.run(debug=True, port=1234, host ="0.0.0.0")
         
     
