@@ -2,6 +2,9 @@ FROM python
 
 WORKDIR /app
 
+RUN pip3 install flask
+RUN pip3 install psycopg2
+
 RUN mkdir templates
 
 COPY index.html ./templates/
@@ -9,8 +12,7 @@ COPY static/API.txt .
 
 COPY app.py .
 
-RUN pip3 install flask
-RUN pip3 install psycopg2
+
 
 EXPOSE 1234
 
