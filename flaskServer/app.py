@@ -30,7 +30,6 @@ dictConfig(
 
 
 def get_db_connection():
-    print(pgpass)
     return psycopg2.connect(host='db', database='db', user='COSU', password=pgpass)
 
 os_name = platform.system()
@@ -52,7 +51,8 @@ def run_SQL():
         cursor = conn.cursor()
         cmd = f"SELECT {input_command} FROM stuff;"
         app.logger.info(cmd)
-        data = cursor.execute(cmd)
+        cursor.execute(cmd)
+        data = cursor.fetchall()
         app.logger.info(data)
         return jsonify(data)
     else:
