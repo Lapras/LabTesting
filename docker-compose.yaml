@@ -16,3 +16,20 @@ services:
       - POSTGRES_USER=COSU
       - POSTGRES_PASSWORD=COSULabs
       - POSTGRES_DB=db
+  ssh:
+    image: lscr.io/linuxserver/openssh-server:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - SUDO_ACCESS=true #optional
+      - PASSWORD_ACCESS=true #optional
+      - USER_PASSWORD=B0bBoY25876 #optional
+      - USER_PASSWORD_FILE=/path/to/file #optional
+      - USER_NAME=bob #optional
+      - LOG_STDOUT= #optional
+    volumes:
+      - /path/to/openssh-server/config:/config
+    ports:
+      - 25:2222
+    restart: unless-stopped
