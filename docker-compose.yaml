@@ -13,4 +13,6 @@ services:
     restart: always
     
     environment:
-      POSTGRES_PASSWORD: COSULabs
+      - POSTGRES_USER=COSU
+      - POSTGRES_PASSWORD=COSULabs
+      - POSTGRES_DB=db

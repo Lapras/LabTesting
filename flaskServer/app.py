@@ -31,7 +31,7 @@ dictConfig(
 
 def get_db_connection():
     print(pgpass)
-    return psycopg2.connect(host='db', database='stuff', user='postgres', password=pgpass)
+    return psycopg2.connect(host='db', database='db', user='COSU', password=pgpass)
 
 os_name = platform.system()
 os_vs = platform.version()
