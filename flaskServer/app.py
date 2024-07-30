@@ -7,6 +7,8 @@ app = Flask(__name__)
 
 pgpass = os.environ['PGPASS']
 
+from logging.config import dictConfig
+
 dictConfig(
     {
         "version": 1,
