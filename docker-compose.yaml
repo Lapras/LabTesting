@@ -9,9 +9,9 @@ services:
     ports:
         - '1234:1234'
   db:
-    build: ./SQLServer
-    restart: always
-    
+    image: postgres
+    volumes:
+      - ./SQLServer/DBDump.sql:/docker-entrypoint-initdb.d/db.sql
     environment:
       - POSTGRES_USER=COSU
       - POSTGRES_PASSWORD=COSULabs
