@@ -8,6 +8,7 @@ app = Flask(__name__)
 pgpass = os.environ['PGPASS']
 
 def get_db_connection():
+    print(pgpass)
     return psycopg2.connect(host='db', database='stuff', user='postgres', password=pgpass)
 
 os_name = platform.system()
