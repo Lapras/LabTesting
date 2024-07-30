@@ -2,6 +2,17 @@ CREATE TABLE public.notes (
     note text
 );
 
+CREATE TABLE public.stuff (
+    data text
+);
+
+COPY public.stuff (data) FROM stdin;
+random data
+this is not anything good
+don't go here
+what's up with you
+\.
+
 --
 -- Data for Name: notes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
