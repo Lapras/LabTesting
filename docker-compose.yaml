@@ -25,11 +25,7 @@ services:
       - SUDO_ACCESS=true #optional
       - PASSWORD_ACCESS=true #optional
       - USER_PASSWORD=B0bBoY25876 #optional
-      - USER_PASSWORD_FILE=/path/to/file #optional
       - USER_NAME=bob #optional
-      - LOG_STDOUT= #optional
-    volumes:
-      - /path/to/openssh-server/config:/config
     ports:
       - 25:2222
     restart: unless-stopped
