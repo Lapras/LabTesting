@@ -52,7 +52,7 @@ def run_SQL():
         conn = get_db_connection()
         cursor = conn.cursor()
         
-        data = cursor.execute("SELECT * FROM stuff where data = %s" (input_command))
+        data = cursor.execute(f"SELECT * FROM stuff where data = {input_command}")
         return jsonify(data)
     
 if(__name__ == '__main__'):
