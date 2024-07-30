@@ -4,8 +4,11 @@ import psycopg2
 
 app = Flask(__name__)
 
+
+pgpass = os.environ['PGPASS']
+
 def get_db_connection():
-    return psycopg2.connect(host='db', database='stuff', user='postgres', password='$PGPASS')
+    return psycopg2.connect(host='db', database='stuff', user='postgres', password=pgpass)
 
 os_name = platform.system()
 os_vs = platform.version()
