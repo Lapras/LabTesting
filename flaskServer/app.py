@@ -7,6 +7,26 @@ app = Flask(__name__)
 
 pgpass = os.environ['PGPASS']
 
+dictConfig(
+    {
+        "version": 1,
+        "formatters": {
+            "default": {
+                "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+            }
+        },
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+                "formatter": "default",
+            }
+        },
+        "root": {"level": "DEBUG", "handlers": ["console"]},
+    }
+)
+
+
 def get_db_connection():
     print(pgpass)
     return psycopg2.connect(host='db', database='stuff', user='postgres', password=pgpass)
@@ -24,6 +44,7 @@ def API():
 
 @app.route('/Send_SQL_Req', methods=['POST'])
 def run_SQL():
+    app.logger.info(pgpass)
     input_command = request.json['command']
     if input_command:
         conn = get_db_connection()
