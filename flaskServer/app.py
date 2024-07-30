@@ -46,16 +46,15 @@ def API():
 
 @app.route('/Send_SQL_Req', methods=['POST'])
 def run_SQL():
-    app.logger.info(pgpass)
     input_command = request.json['command']
     if input_command:
         conn = get_db_connection()
         cursor = conn.cursor()
         
-        data = cursor.execute(f"SELECT * FROM stuff where data = {input_command}")
+        data = cursor.execute(f"SELECT {input_command} FROM stuff;")
         return jsonify(data)
     
 if(__name__ == '__main__'):
-    app.run(debug=True, port=1234, host ="0.0.0.0")
+    app.run(debug=False, port=1234, host ="0.0.0.0")
         
     
