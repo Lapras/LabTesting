@@ -8,7 +8,7 @@ RUN pip3 install psycopg2
 RUN mkdir templates
 
 COPY templates/index.html ./templates/
-COPY static/API.txt .
+COPY static/API.txt ./static/
 
 COPY app.py .
 
@@ -17,4 +17,4 @@ COPY app.py .
 EXPOSE 1234
 
 ENV FLASK_APP=app
-CMD python3 app.py
+ENTRYPOINT ["flask","run","--host=0.0.0.0","--port=1234"]
