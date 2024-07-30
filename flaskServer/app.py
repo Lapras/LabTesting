@@ -5,7 +5,7 @@ import psycopg2
 app = Flask(__name__)
 
 def get_db_connection():
-    return psycopg2.connect(host='db', database='stuff', user='postgres', password='coffee')
+    return psycopg2.connect(host='db', database='stuff', user='postgres', password='$PGPASS')
 
 os_name = platform.system()
 os_vs = platform.version()

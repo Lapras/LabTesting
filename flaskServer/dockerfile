@@ -17,4 +17,5 @@ COPY app.py .
 EXPOSE 1234
 
 ENV FLASK_APP=app
+ENV PGPASS=COSULabs
 ENTRYPOINT ["flask","run","--host=0.0.0.0","--port=1234"]

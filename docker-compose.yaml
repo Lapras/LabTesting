@@ -13,4 +13,4 @@ services:
     restart: always
     
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: COSULabs
