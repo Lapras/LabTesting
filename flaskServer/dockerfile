@@ -5,7 +5,7 @@ WORKDIR /app
 RUN mkdir templates
 
 COPY index.html ./templates/
-COPY API.txt .
+COPY static/API.txt .
 
 COPY app.py .
 
