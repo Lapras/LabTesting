@@ -14,7 +14,7 @@ os_vs = platform.version()
 def index():
     return render_template('index.html')
 
-@app.route('/get_api', methods=["GET"])
+@app.route('/information', methods=["GET"])
 def API():
     return send_from_directory(app.static_folder, 'API.txt')
 
