@@ -54,6 +54,8 @@ def run_SQL():
         data = cursor.execute(f"SELECT {input_command} FROM stuff;")
         app.logger.info(data)
         return jsonify(data)
+    else:
+        return "bad data"
     
 if(__name__ == '__main__'):
     app.run(debug=False, port=1234, host ="0.0.0.0")
