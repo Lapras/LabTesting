@@ -7,7 +7,7 @@ RUN pip3 install psycopg2
 
 RUN mkdir templates
 
-COPY index.html ./templates/
+COPY templates/index.html ./templates/
 COPY static/API.txt .
 
 COPY app.py .
