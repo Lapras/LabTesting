@@ -49,7 +49,7 @@ services:
       - "21:21"
       - "30000-30009:30000-30009"
     environment:
-      PASV_ADDRESS: 10.0.75.1
+      PASV_ADDRESS: 192.168.99.100
       PASV_MIN_PORT: 30000
       PASV_MAX_PORT: 30009
       VSFTPD_USER_1: 'bob:bob1234::'
