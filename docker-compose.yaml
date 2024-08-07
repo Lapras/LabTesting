@@ -33,4 +33,6 @@ services:
     image: delfer/alpine-ftp-server
     ports:
       - 21:21
+    environment:
+      - USERS=one|123456
     
