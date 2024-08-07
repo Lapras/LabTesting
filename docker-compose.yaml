@@ -29,18 +29,27 @@ services:
     ports:
       - 2222:2222
     restart: unless-stopped
-  ftpd_server:
-    image: stilliard/pure-ftpd
-    container_name: pure-ftpd
+  ftp:
+    image: delfer/apline-ftp-server
     ports:
-      - "21:21"
-      - "30000-30009:30000-30009"
+      - 21:21
     environment:
-      PUBLICHOST: "localhost"
-      FTP_USER_NAME: ol
-      FTP_USER_PASS: mypass
-      FTP_USER_HOME: /home/username
-    restart: always
+      - USERS=one|1234 two|1234
+    volumes:
+      - ./one:/ftp/one
+      - ./two:/ftp/two
+  # ftpd_server:
+  #   image: stilliard/pure-ftpd
+  #   container_name: pure-ftpd
+  #   ports:
+  #     - "21:21"
+  #     - "30000-30009:30000-30009"
+  #   environment:
+  #     PUBLICHOST: "localhost"
+  #     FTP_USER_NAME: ol
+  #     FTP_USER_PASS: mypass
+  #     FTP_USER_HOME: /home/username
+  #   restart: always
   # vsftpd:
   #   container_name: vsftpd
   #   image: wildscamp/vsftpd
