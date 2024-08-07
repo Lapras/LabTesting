@@ -29,3 +29,8 @@ services:
     ports:
       - 2222:2222
     restart: unless-stopped
+  ftp:
+    image: delfer/alpine-ftp-server
+    environment:
+      - USERS=one|1234
+    
