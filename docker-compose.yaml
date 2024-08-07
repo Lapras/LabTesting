@@ -31,6 +31,8 @@ services:
     restart: unless-stopped
   ftp:
     image: delfer/alpine-ftp-server
+    ports:
+      - 21:21
     environment:
-      - USERS=one|1234
+      - USERS=one|testPass
     
