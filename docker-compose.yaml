@@ -30,7 +30,7 @@ services:
       - 2222:2222
     restart: unless-stopped
   ftp:
-    image: delfer/apline-ftp-server
+    image: delfer/alpine-ftp-server
     ports:
       - 21:21
     environment:
