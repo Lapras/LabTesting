@@ -1,0 +1,12 @@
+# sudo docker build -t system_health_check .
+# sudo docker run -d -p 1024:1024 --rm -it system_health_check
+
+FROM ubuntu
+
+COPY adminserver .
+COPY flag2.txt .
+
+ENV ADMINPASS=password
+ENV ADMINFLAG=flag{0v3rfl0w}
+
+CMD ./adminserver

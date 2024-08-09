@@ -1,8 +1,10 @@
-SETUP:
-Website
-SQL Injection
-SSH
-
 TODO:
-setup FTP server for admin binary
-setup vulnearble admin binary
+Setup admin watchdog
+Compile services into docker
+Place flags
+
+TESTING:
+Test network discovery
+Test binex
+test exploit automation
+Test threaded bin?

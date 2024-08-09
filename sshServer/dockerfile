@@ -1,3 +1,5 @@
 FROM lscr.io/linuxserver/openssh-server:latest
 
 COPY ftp_shadow.txt ./config/
+
+COPY flag.txt ./tmp/
