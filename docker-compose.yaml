@@ -17,7 +17,8 @@ services:
       - POSTGRES_PASSWORD=COSULabs
       - POSTGRES_DB=db
   ssh:
-    image: lscr.io/linuxserver/openssh-server:latest
+    build:
+      context: sshServer
     environment:
       - PUID=1000
       - PGID=1000

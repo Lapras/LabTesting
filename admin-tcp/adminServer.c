@@ -112,3 +112,7 @@ int main()
 	// After chatting close the socket 
 	close(sockfd); 
 }
+
+void garbage() {
+    char buf[3000];    
+}
