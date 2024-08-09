@@ -1,0 +1,3 @@
+FROM stilliard/pure-ftpd
+
+COPY testbin.txt ./home/bob/

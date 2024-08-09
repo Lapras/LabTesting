@@ -31,7 +31,8 @@ services:
       - 2222:2222
     restart: unless-stopped
   ftpd_server:
-    image: stilliard/pure-ftpd
+    build:
+      context: ftpServer
     container_name: pure-ftpd
     ports:
       - "21:21"
