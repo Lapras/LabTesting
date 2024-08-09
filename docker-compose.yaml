@@ -23,7 +23,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - SUDO_ACCESS=true #optional
+      - SUDO_ACCESS=false #optional
       - PASSWORD_ACCESS=true #optional
       - USER_PASSWORD=B0bBoY25876 #optional
       - USER_NAME=bob #optional
