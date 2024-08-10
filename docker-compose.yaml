@@ -46,3 +46,5 @@ services:
   admin:
     build:
       context: admin-tcp
+    ports:
+      - "8085:8085"
