@@ -16,4 +16,4 @@ RUN gcc adminwatchdog.c -o adminwatchdog
 RUN chmod 777 adminServer
 RUN chmod 777 adminwatchdog
 
-CMD ./adminwatchdog | tee /proc/1/fd/1
+ENTRYPOINT ["./adminwatchdog"]
