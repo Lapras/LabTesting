@@ -3,14 +3,14 @@
 
 FROM gcc:latest
 
-COPY adminserver.c .
+COPY adminServer.c .
 COPY flag2.txt .
 COPY adminwatchdog.c .
 
 ENV ADMINPASS=password
 ENV ADMINFLAG=flag{0v3rfl0w}
 
-RUN gcc addminserver.c -o adminserver
+RUN gcc addminServer.c -o adminserver
 RUN gcc adminwatchdog.c -o adminwatchdog
 
 RUN chmod 777 adminserver
