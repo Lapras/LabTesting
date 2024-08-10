@@ -17,4 +17,3 @@ RUN chmod 777 adminServer
 RUN chmod 777 adminwatchdog
 
 CMD ./adminwatchdog
-ENTRYPOINT ["tail", "-f", "/dev/null"]
