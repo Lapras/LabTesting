@@ -12,7 +12,7 @@
 #include <signal.h>
 
 #define MAX 80
-#define PORT 8082
+#define PORT 8085
 #define MAXCONN 5
 #define SA struct sockaddr 
 
