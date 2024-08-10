@@ -16,7 +16,7 @@ void handleSignal(int signal) {
 int forkServer(int ownPID) {
     pid_t pid = fork();
     if(pid < 0) {
-        printf("Failed to fork a server");
+        printf("Failed to fork a server\n");
         // exit(0);
     } else if(pid == 0) {
         printf("execcing\n");
