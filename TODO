@@ -1,7 +1,5 @@
 TODO:
-Setup admin watchdog
-Compile services into docker
-Place flags
+Move services into docker
 
 TESTING:
 Test network discovery

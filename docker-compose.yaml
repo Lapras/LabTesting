@@ -43,17 +43,6 @@ services:
       FTP_USER_PASS: bob1234
       FTP_USER_HOME: /home/bob
     restart: always
-  # vsftpd:
-  #   container_name: vsftpd
-  #   image: wildscamp/vsftpd
-  #   hostname: vsftpd
-  #   ports:
-  #     - "21:21"
-  #     - "30000-30009:30000-30009"
-  #   environment:
-  #     PASV_ADDRESS: 192.168.99.100
-  #     PASV_MIN_PORT: 30000
-  #     PASV_MAX_PORT: 30009
-  #     VSFTPD_USER_1: 'bob:bob1234::'
-  #     VSFTPD_USER_2: 'alice:sexygurl::'
-  #     VSFTPD_USER_3: 'olroc:gigemAgs!::'
+  admin:
+    build:
+      context: admin-tcp

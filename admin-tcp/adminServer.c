@@ -6,9 +6,24 @@
 #include <sys/socket.h> 
 #include <sys/types.h> 
 #include <unistd.h> // read(), write(), close()
+#include <pthread.h>
+#include <signal.h>
+
 #define MAX 80
-#define PORT 8080
+#define PORT 8082
+#define MAXCONN 5
 #define SA struct sockaddr 
+
+int parentSig;
+
+void handle_signal(int signal) {
+	if (signal == SIGUSR1) {
+		kill(parentSig, SIGUSR1);
+	}
+	if (signal == SIGTERM) {
+		exit(0);
+	}
+ }
 
 void printHex(char* buff, int buffsize) {
 	int i;
@@ -21,7 +36,7 @@ void printHex(char* buff, int buffsize) {
 }
 
 // Function designed for chat between client and server. 
-void adminServer(int connfd) 
+void *adminServer(int* fdPointer) 
 { 
     const char intro[] = "Welcome to the admin server! Please login \n";
     const char fail[] = "You have failed login. Bye. \n";
@@ -31,8 +46,10 @@ void adminServer(int connfd)
 	const char preFlag[] = "here's your flag! ";
 	const char postFlag[] = " \n";
 	const char unknown[] = "input unknown, try something else \n";
+	const char watchdog[] = "good";
 	char buff[80]; 
 	int n; 
+	int connfd = *fdPointer;
 
 	char* pass = getenv("ADMINPASS");
     char* flag = getenv("ADMINFLAG");
@@ -53,13 +70,17 @@ void adminServer(int connfd)
         printf("error reading from socket\n");
     }
 
-    if(strcmp(buff, pass) != 0) {
+	if(strcmp("wd", buff) == 0) {
+		write(connfd, watchdog, sizeof(watchdog));
+		close(connfd);
+		return;
+	} else if(strcmp(buff, pass) != 0) {
 		printHex(buff, strlen(buff));
 		printHex(pass, strlen(pass));
         write(connfd, fail, sizeof(fail));
 		close(connfd);
         return;
-    } else {
+	} else {
 		printf("password accepted\n");
 		write(connfd, success, sizeof(success));
 	}
@@ -97,34 +118,72 @@ void adminServer(int connfd)
 } 
 
 void listenFunc(struct sockaddr_in cli, int sockfd) {
+	const char maxMsg[] = "We have reached the maximum number of connections, come back later.";
+	const char error[] = "Internal server error. Contact sysadmin.";
+	pthread_t connThreads[MAXCONN];
+	int conns = 0;
     // Now server is ready to listen and verification 
+	for(;;) {
+		if(conns < MAXCONN-1) {
+			if ((listen(sockfd, 5)) != 0) { 
+			printf("Listen failed...\n"); 
+			exit(0); 
+			} 
+			else
+				printf("Server listening..\n"); 
+			int len = sizeof(cli); 
 
-	if ((listen(sockfd, 5)) != 0) { 
-		printf("Listen failed...\n"); 
-		exit(0); 
-	} 
-	else
-		printf("Server listening..\n"); 
-	int len = sizeof(cli); 
+			// Accept the data packet from client and verification 
+			int connfd = accept(sockfd, (SA*)&cli, &len); 
+			if (connfd < 0) { 
+				printf("server accept failed...\n"); 
+				exit(0); 
+			} 
+			if(conns >= MAXCONN-1) {
+				write(connfd, maxMsg, sizeof(maxMsg));
+				close(connfd);
+			} else {
+				printf("creating thread \n");
+				pthread_t newThread;
+				connThreads[conns] = newThread;
+				if (pthread_create(&newThread, NULL, adminServer, (void*)&connfd) < 0) {
+					printf("Could not create thread \n");
+					write(connfd, error, sizeof(error));
+				} else {
+					conns ++;
+				}
+			}
+			printf("thread created");
+		} else {
+			sleep(1);
+		}
+		
+		for(int i = 0; i < conns; i++) {
+			int res = pthread_tryjoin_np(connThreads[i], NULL);
+			if (res == 0) {
+				// Thread has finished and has been joined successfully
+				printf("A client has closed connection.\n");
+				conns --;
+			}
+		}// Function for chatting between client and server 
+	}
+}
 
-	// Accept the data packet from client and verification 
-	int connfd = accept(sockfd, (SA*)&cli, &len); 
-	if (connfd < 0) { 
-		printf("server accept failed...\n"); 
-		exit(0); 
-	} 
-	else
-		printf("server accept the client...\n"); 
-
-	// Function for chatting between client and server 
-	adminServer(connfd); 
+void garbage() {
+    char buf[3000];  
+	return;  
 }
 
 // Driver function 
-int main() 
+int main(int argc, char* argv[]) 
 { 
+	signal(SIGUSR1, handle_signal);
+	signal(SIGTERM, handle_signal);
 	int sockfd, connfd, len; 
 	struct sockaddr_in servaddr, cli; 
+
+	parentSig = atoi(argv[1]);
+	printf("parent signal is: %d \n", parentSig);
 
 	// socket create and verification 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0); 
@@ -145,19 +204,13 @@ int main()
 	if ((bind(sockfd, (SA*)&servaddr, sizeof(servaddr))) != 0) { 
 		printf("socket bind failed...\n"); 
 		exit(0); 
-	} 
-	else
+	} else {
 		printf("Socket successfully binded..\n"); 
+	}
     
     printf("Listening for clients... \n");
 
-    for(;;) {
-        listenFunc(cli, sockfd);
-    }    
+	listenFunc(cli, sockfd);
 	// After chatting close the socket 
 	close(sockfd); 
-}
-
-void garbage() {
-    char buf[3000];    
 }

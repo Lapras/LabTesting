@@ -5,8 +5,9 @@ FROM ubuntu
 
 COPY adminserver .
 COPY flag2.txt .
+COPY adminwatchdog .
 
 ENV ADMINPASS=password
 ENV ADMINFLAG=flag{0v3rfl0w}
 
-CMD ./adminserver
+CMD ./adminwatchdog
