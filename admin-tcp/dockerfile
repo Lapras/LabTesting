@@ -10,11 +10,11 @@ COPY adminwatchdog.c .
 ENV ADMINPASS=password
 ENV ADMINFLAG=flag{0v3rfl0w}
 
-# RUN gcc adminServer.c -o adminserver
-# RUN gcc adminwatchdog.c -o adminwatchdog
+RUN gcc adminServer.c -o adminServer
+RUN gcc adminwatchdog.c -o adminwatchdog
 
-# RUN chmod 777 adminserver
-# RUN chmod 777 adminwatchdog
+RUN chmod 777 adminServer
+RUN chmod 777 adminwatchdog
 
-# CMD ./adminwatchdog
+CMD ./adminwatchdog
 ENTRYPOINT ["tail", "-f", "/dev/null"]

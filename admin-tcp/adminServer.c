@@ -1,3 +1,6 @@
+#define _GNU_SOURCE
+
+#include <pthread.h>
 #include <stdio.h> 
 #include <netdb.h> 
 #include <netinet/in.h> 
@@ -6,7 +9,6 @@
 #include <sys/socket.h> 
 #include <sys/types.h> 
 #include <unistd.h> // read(), write(), close()
-#include <pthread.h>
 #include <signal.h>
 
 #define MAX 80
@@ -36,7 +38,7 @@ void printHex(char* buff, int buffsize) {
 }
 
 // Function designed for chat between client and server. 
-void *adminServer(int* fdPointer) 
+void *adminServer(void* argp) 
 { 
     const char intro[] = "Welcome to the admin server! Please login \n";
     const char fail[] = "You have failed login. Bye. \n";
@@ -47,9 +49,9 @@ void *adminServer(int* fdPointer)
 	const char postFlag[] = " \n";
 	const char unknown[] = "input unknown, try something else \n";
 	const char watchdog[] = "good";
-	char buff[80]; 
+	char buff[3000]; 
 	int n; 
-	int connfd = *fdPointer;
+	int connfd = *(int*)argp;
 
 	char* pass = getenv("ADMINPASS");
     char* flag = getenv("ADMINFLAG");
@@ -73,13 +75,13 @@ void *adminServer(int* fdPointer)
 	if(strcmp("wd", buff) == 0) {
 		write(connfd, watchdog, sizeof(watchdog));
 		close(connfd);
-		return;
+		return NULL;
 	} else if(strcmp(buff, pass) != 0) {
 		printHex(buff, strlen(buff));
 		printHex(pass, strlen(pass));
         write(connfd, fail, sizeof(fail));
 		close(connfd);
-        return;
+        return NULL;
 	} else {
 		printf("password accepted\n");
 		write(connfd, success, sizeof(success));
