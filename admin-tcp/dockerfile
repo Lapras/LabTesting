@@ -10,4 +10,7 @@ COPY adminwatchdog .
 ENV ADMINPASS=password
 ENV ADMINFLAG=flag{0v3rfl0w}
 
+RUN chmod 777 adminserver
+RUN chmod 777 adminwatchdog
+
 CMD ./adminwatchdog
