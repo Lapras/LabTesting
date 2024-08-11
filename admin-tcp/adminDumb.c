@@ -74,13 +74,13 @@ void adminServer(int connfd)
 	if(strcmp("wd", buff) == 0) {
 		write(connfd, watchdog, sizeof(watchdog));
 		close(connfd);
-		return NULL;
+		return;
 	} else if(strcmp(buff, pass) != 0) {
 		printHex(buff, strlen(buff));
 		printHex(pass, strlen(pass));
         write(connfd, fail, sizeof(fail));
 		close(connfd);
-        return NULL;
+        return;
 	} else {
 		printf("password accepted\n");
 		write(connfd, success, sizeof(success));
