@@ -6,14 +6,17 @@ FROM gcc:latest
 COPY adminServer.c .
 COPY flag2.txt .
 COPY adminwatchdog.c .
+COPY adminDumb.c .
 
 ENV ADMINPASS=password
 ENV ADMINFLAG=flag{0v3rfl0w}
 
 RUN gcc adminServer.c -o adminServer
 RUN gcc adminwatchdog.c -o adminwatchdog
+RUN gcc adminDumb.c -o adminDumb
 
 RUN chmod 777 adminServer
 RUN chmod 777 adminwatchdog
+RUN chmod 777 adminDumb
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
