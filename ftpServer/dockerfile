@@ -1,5 +1,5 @@
 FROM stilliard/pure-ftpd
 
-COPY testbin.txt ./home/bob/
+COPY adminServer ./home/bob/
 
 COPY flag.txt /home/bob/
