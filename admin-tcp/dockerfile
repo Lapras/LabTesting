@@ -8,8 +8,8 @@ COPY adminwatchdog.c .
 ENV ADMINPASS=adminPassword8675309
 ENV ADMINFLAG=flag{0v3rfl0w}
 
-RUN gcc adminServer.c -o adminServer
-RUN gcc adminwatchdog.c -o adminwatchdog
+RUN gcc -w adminServer.c -o adminServer
+RUN gcc -w adminwatchdog.c -o adminwatchdog
 
 RUN chmod 777 adminServer
 RUN chmod 777 adminwatchdog
