@@ -11,7 +11,7 @@
 #include <unistd.h> // read(), write(), close()
 #include <signal.h>
 
-#define MAX 80
+#define MAX 10000
 #define PORT 8085
 #define MAXCONN 5
 #define SA struct sockaddr 
@@ -39,7 +39,7 @@ void adminServer(int connfd)
 	const char postFlag[] = " \n";
 	const char unknown[] = "input unknown, try something else \n";
 	const char watchdog[] = "good";
-	char buff[3000]; 
+	char buff[100]; 
 	int n; 
 
 	char* pass = getenv("ADMINPASS");
