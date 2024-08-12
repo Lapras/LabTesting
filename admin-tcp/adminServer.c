@@ -11,7 +11,7 @@
 #include <unistd.h> // read(), write(), close()
 #include <signal.h>
 
-#define MAX 10000
+#define MAX 50
 #define PORT 8085
 #define MAXCONN 5
 #define SA struct sockaddr 
