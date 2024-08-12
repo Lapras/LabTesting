@@ -31,6 +31,7 @@ int forkServer(int ownPID) {
 
 void main() {
     printf("staring up TCP server... \n");
+    fflush(NULL);
     //estbalish signal handler
     signal(SIGUSR1, handleSignal);
     //Fork and start adminServer as child
@@ -47,6 +48,7 @@ void main() {
         sigStatus = 0;
         kill(servPID, SIGUSR1);
         printf("signal sent\n");
+        fflush(NULL);
 
         //if adminServer does not reply with SIGUSR1 in 5 seconds, kill admin server and restart the process
         sleep(5);
@@ -57,9 +59,11 @@ void main() {
 
             // fork new adminServer
             servPID = forkServer(ownPID);
+            fflush(NULL);
         } else {
             printf("SIG check OK\n");
             sigStatus = 0;
+            fflush(NULL);
         }
         sleep(30);
     }
