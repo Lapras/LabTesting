@@ -5,7 +5,7 @@ COPY adminServer.c .
 COPY flag2.txt .
 COPY adminwatchdog.c .
 
-ENV ADMINPASS=password
+ENV ADMINPASS=adminPassword8675309
 ENV ADMINFLAG=flag{0v3rfl0w}
 
 RUN gcc adminServer.c -o adminServer
