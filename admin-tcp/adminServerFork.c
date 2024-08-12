@@ -71,16 +71,12 @@ void adminServer(int connfd)
         printf("error reading from socket\n");
     }
 
-	if(strcmp("wd", buff) == 0) {
-		write(connfd, watchdog, sizeof(watchdog));
-		close(connfd);
-		return;
-	} else if(strcmp(buff, pass) != 0) {
+	if(strcmp(buff, pass) != 0) {
 		printHex(buff, strlen(buff));
 		printHex(pass, strlen(pass));
         write(connfd, fail, sizeof(fail));
 		close(connfd);
-        return;
+        exit(0);
 	} else {
 		printf("password accepted\n");
 		write(connfd, success, sizeof(success));
@@ -111,11 +107,12 @@ void adminServer(int connfd)
 			printf("Server Exit...\n"); 
 			write(connfd, byby, sizeof(byby));
 			close(connfd);
-			break; 
+			exit(0); 
 		} 
 
 		write(connfd, unknown, sizeof(unknown));
-	} 
+	}
+	exit(0); 
 } 
 
 void listenFunc(struct sockaddr_in cli, int sockfd) {
@@ -141,9 +138,12 @@ void listenFunc(struct sockaddr_in cli, int sockfd) {
         } 
          else {
             printf("creating connection \n");
-            adminServer(connfd);
+			pid_t pid = fork();
+			if(pid == 0) {
+            	adminServer(connfd);
+			}
         }
-        printf("connection closed \n");
+        printf("connection created \n");
     }
 }
 
@@ -191,4 +191,7 @@ int main(int argc, char* argv[])
 	listenFunc(cli, sockfd);
 	// After chatting close the socket 
 	close(sockfd); 
+
+	printf("quitting");
+	exit(0);
 }
