@@ -34,9 +34,6 @@ services:
     build:
       context: ftpServer
     container_name: pure-ftpd
-    ports:
-      - "21:21"
-      - "30000-30009:30000-30009"
     environment:
       PUBLICHOST: "localhost"
       FTP_USER_NAME: bob
@@ -46,5 +43,3 @@ services:
   admin:
     build:
       context: admin-tcp
-    ports:
-      - "8085:8085"
