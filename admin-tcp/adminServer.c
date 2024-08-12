@@ -19,7 +19,7 @@
 int parentSig;
 
 void handle_signal(int signal) {
-	if (signal == SIGUSR1) {
+	if (signal == SIGUSR1 && parentSig != 0) {
 		kill(parentSig, SIGUSR1);
 	}
 	if (signal == SIGTERM) {
@@ -38,7 +38,7 @@ void printHex(char* buff, int buffsize) {
 }
 
 // Function designed for chat between client and server. 
-void *adminServer(void* argp) 
+void adminServer(int connfd) 
 { 
     const char intro[] = "Welcome to the admin server! Please login \n";
     const char fail[] = "You have failed login. Bye. \n";
@@ -51,10 +51,17 @@ void *adminServer(void* argp)
 	const char watchdog[] = "good";
 	char buff[3000]; 
 	int n; 
-	int connfd = *(int*)argp;
 
 	char* pass = getenv("ADMINPASS");
     char* flag = getenv("ADMINFLAG");
+	if(!pass) {
+		printf("running default password: pass\n");
+		pass = "pass";
+	}
+	if(!flag) {
+		printf("running default flag: flag\n");
+		flag = "flag";
+	}
 
 	if(flag != NULL) {
 		printf("pass is: %s \n", pass);
@@ -72,16 +79,12 @@ void *adminServer(void* argp)
         printf("error reading from socket\n");
     }
 
-	if(strcmp("wd", buff) == 0) {
-		write(connfd, watchdog, sizeof(watchdog));
-		close(connfd);
-		return NULL;
-	} else if(strcmp(buff, pass) != 0) {
+	if(strcmp(buff, pass) != 0) {
 		printHex(buff, strlen(buff));
 		printHex(pass, strlen(pass));
         write(connfd, fail, sizeof(fail));
 		close(connfd);
-        return NULL;
+        exit(0);
 	} else {
 		printf("password accepted\n");
 		write(connfd, success, sizeof(success));
@@ -112,11 +115,12 @@ void *adminServer(void* argp)
 			printf("Server Exit...\n"); 
 			write(connfd, byby, sizeof(byby));
 			close(connfd);
-			break; 
+			exit(0); 
 		} 
 
 		write(connfd, unknown, sizeof(unknown));
-	} 
+	}
+	exit(0); 
 } 
 
 void listenFunc(struct sockaddr_in cli, int sockfd) {
@@ -126,49 +130,29 @@ void listenFunc(struct sockaddr_in cli, int sockfd) {
 	int conns = 0;
     // Now server is ready to listen and verification 
 	for(;;) {
-		if(conns < MAXCONN-1) {
-			if ((listen(sockfd, 5)) != 0) { 
-			printf("Listen failed...\n"); 
-			exit(0); 
-			} 
-			else
-				printf("Server listening..\n"); 
-			int len = sizeof(cli); 
+        if ((listen(sockfd, 5)) != 0) { 
+        printf("Listen failed...\n"); 
+        exit(0); 
+        } 
+        else
+            printf("Server listening..\n"); 
+        int len = sizeof(cli); 
 
-			// Accept the data packet from client and verification 
-			int connfd = accept(sockfd, (SA*)&cli, &len); 
-			if (connfd < 0) { 
-				printf("server accept failed...\n"); 
-				exit(0); 
-			} 
-			if(conns >= MAXCONN-1) {
-				write(connfd, maxMsg, sizeof(maxMsg));
-				close(connfd);
-			} else {
-				printf("creating thread \n");
-				pthread_t newThread;
-				connThreads[conns] = newThread;
-				if (pthread_create(&newThread, NULL, adminServer, (void*)&connfd) < 0) {
-					printf("Could not create thread \n");
-					write(connfd, error, sizeof(error));
-				} else {
-					conns ++;
-				}
+        // Accept the data packet from client and verification 
+        int connfd = accept(sockfd, (SA*)&cli, &len); 
+        if (connfd < 0) { 
+            printf("server accept failed...\n"); 
+            exit(0); 
+        } 
+         else {
+            printf("creating connection \n");
+			pid_t pid = fork();
+			if(pid == 0) {
+            	adminServer(connfd);
 			}
-			printf("thread created");
-		} else {
-			sleep(1);
-		}
-		
-		for(int i = 0; i < conns; i++) {
-			int res = pthread_tryjoin_np(connThreads[i], NULL);
-			if (res == 0) {
-				// Thread has finished and has been joined successfully
-				printf("A client has closed connection.\n");
-				conns --;
-			}
-		}// Function for chatting between client and server 
-	}
+        }
+        printf("connection created \n");
+    }
 }
 
 void garbage() {
@@ -184,7 +168,11 @@ int main(int argc, char* argv[])
 	int sockfd, connfd, len; 
 	struct sockaddr_in servaddr, cli; 
 
-	parentSig = atoi(argv[1]);
+	if(argc >= 2) {
+		parentSig = atoi(argv[1]);
+	} else {
+		printf("running standalone");
+	}
 	printf("parent signal is: %d \n", parentSig);
 
 	// socket create and verification 
@@ -215,4 +203,7 @@ int main(int argc, char* argv[])
 	listenFunc(cli, sockfd);
 	// After chatting close the socket 
 	close(sockfd); 
+
+	printf("quitting");
+	exit(0);
 }
