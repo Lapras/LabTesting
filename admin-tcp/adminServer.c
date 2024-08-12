@@ -11,7 +11,7 @@
 #include <unistd.h> // read(), write(), close()
 #include <signal.h>
 
-#define MAX 50
+#define MAX 80
 #define PORT 8085
 #define MAXCONN 5
 #define SA struct sockaddr 
@@ -81,7 +81,7 @@ void adminServer(int connfd)
 	for (;;) { 
 		printf("reading input \n");
 		bzero(buff, MAX); 
-        n = read(connfd, buff, MAX);
+        n = read(connfd, buff, 10000);
 		buff[strlen(buff)-1] = '\x00';
         if(n < 0) {
             printf("error reading from socket \n");
